@@ -1,0 +1,42 @@
+<schemalist>
+<schema id="org.gnome.shell.extensions.gnome-pr-indicator" path="/org/gnome/shell/extensions/gnome-pr-indicator/">
+<key name="repository" type="s"><default>'owner/repository'</default><summary>Репозиторий (owner/repository)</summary></key>
+<key name="limit" type="i"><default>3</default><summary>Количество PR</summary><range min="1" max="10"/></key>
+<key name="sort" type="s"><default>'created'</default><summary>Сортировка</summary></key>
+<key name="direction" type="s"><default>'desc'</default><summary>Порядок</summary></key>
+<key name="author" type="s"><default>''</default><summary>Автор (пусто — все)</summary></key>
+<key name="include-open" type="b"><default>true</default><summary>Открытые PR</summary></key>
+<key name="include-draft" type="b"><default>true</default><summary>Черновики</summary></key>
+<key name="include-merged" type="b"><default>true</default><summary>Слитые PR</summary></key>
+<key name="include-closed" type="b"><default>true</default><summary>Закрытые без слияния</summary></key>
+<key name="manual-only" type="b"><default>false</default><summary>Только ручное обновление</summary></key>
+<key name="auto-refresh" type="b"><default>true</default><summary>Периодическое обновление</summary></key>
+<key name="refresh-seconds" type="i"><default>60</default><summary>Интервал, секунд</summary><range min="1" max="2147483647"/></key>
+<key name="refresh-on-start" type="b"><default>true</default><summary>Обновлять при включении расширения</summary></key>
+<key name="refresh-on-menu" type="b"><default>true</default><summary>Обновлять при открытии меню</summary></key>
+<key name="position" type="s"><default>'right'</default><summary>Расположение</summary></key>
+<key name="panel-left-margin-left" type="i"><default>0</default><summary>Отступ слева, px</summary><range min="0" max="500"/></key>
+<key name="panel-left-margin-right" type="i"><default>0</default><summary>Отступ справа, px</summary><range min="0" max="500"/></key>
+<key name="panel-center-margin-left" type="i"><default>0</default><summary>Отступ слева, px</summary><range min="0" max="500"/></key>
+<key name="panel-center-margin-right" type="i"><default>0</default><summary>Отступ справа, px</summary><range min="0" max="500"/></key>
+<key name="panel-right-margin-left" type="i"><default>0</default><summary>Отступ слева, px</summary><range min="0" max="500"/></key>
+<key name="panel-right-margin-right" type="i"><default>0</default><summary>Отступ справа, px</summary><range min="0" max="500"/></key>
+<key name="color-states" type="b"><default>true</default><summary>Цветовые обозначения состояний PR</summary></key>
+<key name="panel-state" type="b"><default>true</default><summary>Состояния PR (цветные метки)</summary></key>
+<key name="panel-icon" type="b"><default>true</default><summary>Значок GitHub</summary></key>
+<key name="panel-count" type="b"><default>false</default><summary>Количество PR</summary></key>
+<key name="panel-numbers" type="b"><default>true</default><summary>Номера PR</summary></key>
+<key name="panel-summary" type="b"><default>true</default><summary>Статусы проверок</summary></key>
+<key name="menu-number" type="b"><default>true</default><summary>Номер PR</summary></key>
+<key name="menu-title" type="b"><default>true</default><summary>Название</summary></key>
+<key name="menu-state" type="b"><default>true</default><summary>Состояние PR</summary></key>
+<key name="menu-summary" type="b"><default>true</default><summary>Сводка проверок</summary></key>
+<key name="menu-details" type="b"><default>true</default><summary>Отдельные проверки</summary></key>
+<key name="menu-updated" type="b"><default>true</default><summary>Время обновления</summary></key>
+<key name="source-checks" type="b"><default>true</default><summary>GitHub Checks</summary></key>
+<key name="source-statuses" type="b"><default>true</default><summary>Классические commit statuses</summary></key>
+<key name="check-filter" type="s"><default>'all'</default><summary>Показывать проверки</summary></key>
+<key name="open-links" type="b"><default>true</default><summary>Открывать ссылки нажатием</summary></key>
+<key name="credentials-revision" type="i"><default>0</default><summary>Internal credential change signal</summary></key>
+</schema>
+</schemalist>

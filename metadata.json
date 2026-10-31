@@ -1,0 +1,10 @@
+{
+  "uuid": "gnome-pr-indicator@extensions.local",
+  "name": "GNOME PR Indicator",
+  "description": "Последние PR и проверки приватного репозитория GitHub",
+  "shell-version": [
+    "46"
+  ],
+  "version": 5,
+  "settings-schema": "org.gnome.shell.extensions.gnome-pr-indicator"
+}

@@ -1,0 +1,9 @@
+.gnome-pr-scroll { max-height: 480px; min-width: 360px; max-width: 680px; }
+.gnome-pr-scroll .popup-menu-item { max-width: 640px; }
+
+.gnome-pr-panel-item { spacing: 4px; }
+.gnome-pr-state { font-weight: bold; }
+.gnome-pr-state-open { color: #3fb950; }
+.gnome-pr-state-draft { color: #9198a1; }
+.gnome-pr-state-closed { color: #f85149; }
+.gnome-pr-state-merged { color: #a371f7; }

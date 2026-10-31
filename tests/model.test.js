@@ -1,0 +1,18 @@
+import {normalizePull, selectPulls, normalizeChecks, summarizeChecks, safeLink} from '../lib/model.js';
+import {DEFAULTS} from '../lib/settings.js';
+import {test, equal, ok} from './assert.js';
+const pull = (n, extra = {}) => normalizePull({number:n, title:`PR ${n}`, state:'open', draft:false, user:{login:'Alice'}, created_at:`2026-10-${String(n).padStart(2,'0')}T00:00:00Z`, updated_at:`2026-10-${String(20-n).padStart(2,'0')}T00:00:00Z`, html_url:`https://github.com/a/b/pull/${n}`, head:{sha:`sha${n}`,repo:{full_name:'a/b'}}, ...extra});
+await test('category_filter_precedes_limit', () => equal(selectPulls([pull(3,{draft:true}),pull(2),pull(1)], {...DEFAULTS,limit:1,'include-draft':false}).map(p=>p.number), [2]));
+await test('draft_is_not_open', () => equal(selectPulls([pull(1,{draft:true})], {...DEFAULTS,'include-draft':false}).length,0));
+await test('merged_and_closed_distinct', () => equal([pull(1,{state:'closed',merged_at:'2026-10-20'}).state,pull(2,{state:'closed'}).state],['merged','closed']));
+await test('updated_sort_asc_and_desc', () => {equal(selectPulls([pull(1),pull(3)],{...DEFAULTS,sort:'updated',direction:'desc'}).map(p=>p.number),[1,3]); equal(selectPulls([pull(1),pull(3)],{...DEFAULTS,sort:'updated',direction:'asc'}).map(p=>p.number),[3,1]);});
+await test('author_filter_case_insensitive', () => equal(selectPulls([pull(1)],{...DEFAULTS,author:'alice'}).length,1));
+const check = (id,name,status,conclusion,app=1) => ({id,name,status,conclusion,app:{id:app},head_sha:'s',html_url:'https://github.com/a/b/actions/runs/1'});
+await test('latest_attempt_wins_per_app_name_sha', () => {const c=normalizeChecks([check(1,'test','completed','failure'),check(2,'test','completed','success'),check(3,'test','completed','failure',2)],[],'head');equal(c.length,2); equal(c.map(x=>x.state).sort(),['failure','success']);});
+await test('failure_and_running_stays_failure', () => equal(summarizeChecks(normalizeChecks([check(1,'a','completed','failure'),check(2,'b','in_progress',null)],[],'head'),{enabled:true,complete:true}).state,'failure'));
+await test('no_checks_is_none', () => equal(summarizeChecks([],{enabled:true,complete:true}).state,'none'));
+await test('disabled_is_not_success', () => equal(summarizeChecks([],{enabled:false,complete:true}).state,'disabled'));
+await test('partial_data_is_unavailable', () => equal(summarizeChecks([{state:'success'}],{enabled:true,complete:false}).state,'unavailable'));
+await test('cancelled_and_skipped_are_not_success', () => {equal(summarizeChecks([{state:'cancelled'},{state:'skipped'}],{enabled:true,complete:true}).state,'cancelled');equal(summarizeChecks([{state:'skipped'}],{enabled:true,complete:true}).state,'skipped');});
+await test('statuses_keep_latest_per_context', () => equal(normalizeChecks([],[{id:1,context:'ci',state:'failure'},{id:2,context:'ci',state:'success'}],'head').map(c=>c.state),['success']));
+await test('safe_link_rejects_non_https_and_credentials',()=>{equal(safeLink('javascript:alert(1)'),null);equal(safeLink('https://user:pass@github.com/a'),null);ok(safeLink('https://github.com/a/b'));equal(safeLink('https://evil.test/a',true),null);});

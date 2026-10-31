@@ -1,0 +1,18 @@
+import Gio from 'gi://Gio';
+import GLib from 'gi://GLib';
+import Adw from 'gi://Adw';
+Gio.resources_register(Gio.Resource.load('/usr/share/gnome-shell/org.gnome.Shell.Extensions.src.gresource'));
+Adw.init();
+const {default:Preferences}=await import('../prefs.js');
+const root=GLib.get_current_dir();
+const [,bytes]=GLib.file_get_contents('metadata.json');
+const metadata={...JSON.parse(new TextDecoder().decode(bytes)),path:root,dir:Gio.File.new_for_path(root)};
+const prefs=new Preferences(metadata);
+const window=new Adw.PreferencesWindow({title:'GNOME PR Indicator — проверка настроек'});
+prefs.fillPreferencesWindow(window);
+window.present();
+print('PASS preferences window constructed');
+const loop=new GLib.MainLoop(null,false);
+GLib.timeout_add_seconds(GLib.PRIORITY_DEFAULT,3,()=>{window.close();loop.quit();return GLib.SOURCE_REMOVE;});
+loop.run();
+print('PASS preferences window close');

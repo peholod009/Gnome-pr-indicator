@@ -1,0 +1,13 @@
+.superpowers/
+__pycache__/
+schemas/gschemas.compiled
+
+# Credentials and local configuration
+.env
+.env.*
+*.keyring
+*.keystore
+credentials.json
+secrets.json
+*.pem
+*.key

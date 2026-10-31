@@ -1,0 +1,4 @@
+import {SecretStore} from '../lib/secrets.js';
+import {test,equal,ok} from './assert.js';
+await test('keyring_locked_never_falls_back_to_file',async()=>{const backend={lookup:async()=>{throw Error('locked');},store:async()=>{throw Error('locked');},clear:async()=>{throw Error('locked');}};let failed=0;const s=new SecretStore({backend});for(const action of [()=>s.lookup(null),()=>s.store('fake',null),()=>s.clear(null)]){try{await action();}catch(e){failed++;ok(!e.message.includes('fake'));}}equal(failed,3);});
+await test('secret_store_roundtrip_and_delete',async()=>{let stored=null;const s=new SecretStore({backend:{lookup:async()=>stored,store:async t=>{stored=t;},clear:async()=>{stored=null;}}});await s.store('fictional-token',null);equal(await s.lookup(null),'fictional-token');await s.clear(null);equal(await s.lookup(null),null);});
